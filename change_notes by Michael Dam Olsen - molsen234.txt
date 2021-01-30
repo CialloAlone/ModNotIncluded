@@ -1,117 +1,199 @@
 
 Changes for DLC
+DLC的更改
 ===============
 
 I have updated your mods to support the current version of Spaced Out DLC,
 and made a number of other small changes. Here is an overview:
+我已更新您的MODS以支持当前版本的Spaced Out DLC，并做了其他一些小更改。以下是概述：
+
 
 Main loader
+主函数加载
 -----------
 I created a file in each mod that does the main patching and loading.
+我在每个mod中创建了一个执行主要修补和加载的文件。
 In Tiny Door it is called tinydoors.cs, similar in the other mods.
+在小门中，它被称为tinyDoors.cs，在其他MOD中类似。
 The file is in the root of the project, easy to spot.
+该文件位于项目的根目录中，很容易找到。
 
 That file consolidates the Info and Tech loading for both DLC and vanilla.
+这个文件合并了 DLC 和 vanilla 的信息和技术载入。
 For the buildings that required OnSpawn() patches, I added it in that file
-too. This means that each building folder now contains only one file, the
-configuration. In the top of the configuration I added a few parameters
-for loading into the build menu and tech tree. This means the configuration
-files hold all details except the STRINGs, see Localization below.
+too. 
+对于需要OnSpawn()补丁的建筑，我也将其添加到该文件中。
+This means that each building folder now contains only one file, the
+configuration. 
+这意味着每个建筑文件夹现在只包含一个文件，即配置。
+In the top of the configuration I added a few parameters
+for loading into the build menu and tech tree.
+在配置的顶部，我添加了一些用于加载到构建菜单和技术树中的参数。
+This means the configuration files hold all details except the STRINGs, 
+see Localization below.
+这意味着配置文件包含除字符串之外的所有详细信息，请参阅下面的本地化。
 
 DLC Compatibility
+DLC兼容性
 -----------------
-I replaced the patching for new buildings with Db.Initialize patches. That
-is currently the preferred way. Vanilla game requires a prefix() patch,
-whereas DLC requires a postfix(). The tech tree loading has also changed
-in DLC, but both vanilla and DLC prefer postfix() so that is what I did.
+I replaced the patching for new buildings with Db.Initialize patches.
+我用Db.Initialize Patches替换了新建筑的修补。
+That is currently the preferred way. 
+这是目前的首选方式。
+Vanilla game requires a prefix() patch, whereas DLC requires a postfix(). 
+Vanilla游戏需要prefix（）补丁，而DLC需要postfix（）。
+The tech tree loading has also changed in DLC, but both vanilla and DLC 
+prefer postfix() so that is what I did.
+DLC中的技术树加载也发生了变化，但是vanilla和DLC都喜欢postfix（），所以我就是这么做的。
 
-That is handled by two helper functions in the same file. Sorry, I learned
-to code back in the 1980's so this with each tiny class in a separate file
-is not the way I am used to doing it :)
+That is handled by two helper functions in the same file. 
+这由同一文件中的两个辅助函数处理。
+Sorry, I learned to code back in the 1980's so this with each tiny class
+in a separate file is not the way I am used to doing it :)
+对不起，我早在1980年代就学会了编码，所以这种将每个小类放在一个单独的文件中的方式
+并不是我习惯的方式:)
 
 I also cleaned up the name spaces, mainly because it was needed for the
-localization to work efficiently. I consolidated the OnSpawn() functions
-within each mod, because having put everything else together I saw no need
-for those to be in a separate file any longer.
+localization to work efficiently. 
+我还清理了命名空间，主要是因为本地化需要高效地工作。
+I consolidated the OnSpawn() functions within each mod, because having put
+everything else together I saw no need for those to be in a separate file
+any longer.
+我合并了每个mod中的OnSpawn()函数，因为将所有其他内容放在一起之后，我认为这些函数
+不再需要放在单独的文件中。
 
 Localization
+本地化
 ------------
-I replaced your localization system with the in-game one. Now users
-can simply open a translation template in the translations folder,
+I replaced your localization system with the in-game one.
+我将你的本地化系统换为游戏中的。
+Now users can simply open a translation template in the translations folder,
 and create a translation file with POEdit.
+现在用户只需在translations文件夹中打开一个翻译模板，然后用POEdit创建一个翻译文件。
 
-The localization code is identical across the 3 mods, except for the name
-space. This makes it easy if you one day decide to make additional mods,
-there is nothing in the Loc.cs file that needs changing apart from the
-name space.
+The localization code is identical across the 3 mods, except for the name 
+space. 
+除了命名空间之外，3种模块的本地化代码是相同的。
+This makes it easy if you one day decide to make additional mods, there is 
+nothing in the Loc.cs file that needs changing apart from the name space.
+如果有一天你决定制作额外的 mods，这将会非常容易，因为除了名称空间之外，Loc.cs文件中
+没有任何东西需要更改。
 
 You set up the strings you want in the main loader, for example
 tinydoors.cs, and then the Loc.cs generates a translation template in
 the translations folder (.pot file), which translators can open directly
-with POedit, just like translations work in the main game.
+with POEdit, just like translations work in the main game.
+在主加载程序中设置所需的字符串，例如 tinydoors.cs，然后 Loc.cs 在翻译文件夹中生成
+翻译模板(.pot文件)。翻译者可以直接使用 POEdit 打开这个文件，就像翻译主游戏一样。
 
 When the user selects a language in the game, the mod STRINGS get
 translated automatically by the game, as long as there is a matching
 .po file in the translation folder of the mod.
+当用户在游戏中选择一种语言时，只要mod的翻译文件夹中有一个匹配的.po文件，
+mod字符串就会被游戏自动翻译。
 
 I converted the existing translations into zh.po and ru.po files, along
 with an it.po file and a partial es.po file in the mods that had those
-languages built in. The Spanish translation only covered one of the
-Insulated Joint Plates, so the rest of that file is open for addition.
+languages built in.
+我将Mod中现有的翻译文件转换为汉语zh.po文件和俄语ru.po文件，以及意大利语it.po文件
+和部分西班牙语es.po文件。
+The Spanish translation only covered one of the Insulated Joint Plates, 
+so the rest of that file is open for addition.
+西班牙文翻译只涵盖了一个绝缘接头板，所以该文件的其余部分是开放的，以供添加。
 
 The translators you credited in the source code are likewise credited
 in the .po files.
+源代码中的翻译人员也同样被记录在.po文件中。
 
 Compiling the mods
+编译Mods
 ------------------
 Because the DLC specific code has to be linked against DLC assemblies,
 whereas vanilla code is linked against the vanilla versions of the same
-assemblies, I had to hack the csproj files a bit. I added new build
-targets which use a bit of logic to select which assembly files to
-reference. To adapt it to your system you can edit the
+assemblies, I had to hack the csproj files a bit.
+因为特定于DLC的代码必须链接到DLC程序集，而普通代码链接到相同程序集的普通版本，
+所以我必须稍微修改一下csproj文件。 
+I added new build targets which use a bit of logic to select which assembly 
+files to reference. 
+我添加了新的构建目标，它们使用一些逻辑来选择要引用的程序集文件。
+To adapt it to your system you can edit the
 <LibFolder>..\..\..\..\LibONI\$(GameContentType)</LibFolder> to point
-to where you have your assemblies. In the LibONI folder you should have
-a "SpacedOut" and a "Vanilla" folder, with the appropriate files of
-each version.
+to where you have your assemblies.
+要使其适应您的系统，您可以编辑
+<LibFolder>..\..\..\..\LibONI\$(GameContentType)</LibFolder>
+以指向程序集所在的位置。
 
+In the LibONI folder you should have a "SpacedOut" and a "Vanilla" 
+folder, with the appropriate files of each version.
+在LibONI文件夹中，您应该有一个“SpacedOut”和一个“Vanilla”文件夹，
+以及每个版本的相应文件。
 Changing between each target in VS can be done as you usually would
-switch between Release and Debug. There were a large amount of game DLL
-files being included, so I cleaned up the references for those as well.
+switch between Release and Debug. 
+可以像通常在 Release 和 Debug 之间切换一样在 VS 中的每个目标之间进行更改。
+There were a large amount of game DLL files being included, so I 
+cleaned up the references for those as well.
+其中包含了大量的游戏DLL文件，所以我也清理了这些文件的引用。
 It is of course not good form to distribute actual parts of the game :)
+当然，分发游戏的实际部分并不是一种好的方式：）
 
 Compiling results in the output DLL file in the SpacedOut or Vanilla
-folders in the obj directory. The vanilla one goes into the
-archived_version\vanilla folder, whereas the SpacedOut goes in the main
-mod folder directly. The mod_info.yaml files are simple, you do not
-need to change those.
+folders in the obj directory. 
+编译结果在obj目录的SpacedOut或Vanilla文件夹中的输出DLL文件。
+The vanilla one goes into the archived_version\vanilla folder, whereas
+the SpacedOut goes in the main mod folder directly. 
+vanilla版文件放入Archived_version\vanilla文件夹，而SpacedOut版直接放入mod
+主文件夹。
+The mod_info.yaml files are simple, you do not need to change those.
+mod_info.yaml文件很简单，您不需要更改这些文件。
 
 Other details
+其他细节
 -------------
 I noticed you had some fix files that were not being compiled in. I
-simply left those as they were. The mods still do exactly the same as
-your originals, I did not alter any functionality.
+simply left those as they were. 
+我注意到您有一些未编译的修复文件。我只是让它们保持原样。
+The mods still do exactly the same as your originals, I did not alter 
+any functionality.
+MODS仍然和你的原版一模一样，我没有改变任何功能。
 
 Uploading the mods
+上传MODS
 ------------------
 Since the DLC the mods are required to document their compatibilities
-in a mod_info.yaml file. I have created a full directory structure in
-each mod called "Steam" that is ready to upload. For the actual upload
-process, you need to update the Oxygen Not Included Uploader.
+in a mod_info.yaml file.
+由于DLC要求MOD在mod_info.yaml文件中记录它们的兼容性。
+I have created a full directory structure in each mod called "Steam" 
+that is ready to upload. 
+我已经在每个模块中创建了一个完整的目录结构，名为“Steam”，可以直接上传。
+
+For the actual upload process, you need to update the Oxygen Not Included
+Uploader.
+对于实际的上传过程，您需要更新Oxygen Not Included Uploader。
 
 I can understand if you want to compile the mods yourself, so see the
 details above.
+如果你想自己编译mods，我可以理解，因此请参见上面的详细信息。
 
 If you just want to update quickly, then simply point Oxygen Not
 Included Updater to each the Steam folder in each mod directory, and
-deselct everything except the first option. Then your description
-and pictures etc remain the same, and only the mods themselves are
-updated.
+deselct everything except the first option. 
+如果您只是想快速更新，那么只需将Oxygen Not Included Updater指向每个mod目录
+中的Steam文件夹，然后删除除第一个选项之外的所有内容。
+Then your description and pictures etc remain the same, and only the mods
+themselves are updated.
+然后，您的描述和图片等将保持不变，并且仅更新mod本身。
 
 Credits
+署名
 -------
-I have not put my name in any of the source files. If you want to give
-credit, you can mention my name "Michael Dam Olsen" on the workshop
-page for the mod. I don't mind either way. I love your mods, and
-wanted myself and others to be able to enjoy them on the DLC as well.
+I have not put my name in any of the source files. 
+我没有将我的名字放在任何源文件中。
+If you want to give credit, you can mention my name "Michael Dam Olsen" 
+on the workshop page for the mod. 
+如果您想给我署名，可以在Mod的创意工坊页面上提及我的名字“Michael Dam Olsen”。
+I don't mind either way. I love your mods, and wanted myself and others 
+to be able to enjoy them on the DLC as well.
+不管怎样我都不介意。我喜欢你的MODS，希望我自己和其他人也能在DLC上享受它们。
 Hope you will be able to update Steam soon! Let me know on github if
 you have any questions or issues.
+希望您能够尽快更新Steam！如果您有任何疑问或问题，请在github上告诉我。
